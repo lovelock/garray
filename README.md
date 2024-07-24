@@ -8,6 +8,90 @@ The most charming part of PHP is the design of **array**. It combines the concep
 
 Recently I've fallen in love with Golang because of its simplicity and readability. But there would be some awful times when it comes to retriet a value from a map. This project is designed for this.
 
+## Usage
+
+```golang
+package main
+
+import (
+ "encoding/json"
+ "fmt"
+
+ array "github.com/lovelock/garray"
+)
+
+func main() {
+ data := `{
+  "name": "John Doe",
+  "age": 30,
+  "email": "john.doe@example.com",
+  "isActive": true,
+  "address": {
+   "street": "123 Main St",
+   "city": "Anytown",
+   "state": "CA",
+   "postalCode": "12345"
+  },
+  "phoneNumbers": [
+   {
+    "type": "home",
+    "number": "555-555-5555"
+   },
+   {
+    "type": "work",
+    "number": "555-555-5556"
+   }
+  ],
+  "projects": [
+   {
+    "name": "Project Alpha",
+    "status": "completed",
+    "tasks": [
+     {
+      "name": "Task 1",
+      "dueDate": "2023-10-01",
+      "completed": true
+     },
+     {
+      "name": "Task 2",
+      "dueDate": "2023-10-15",
+      "completed": false
+     }
+    ]
+   },
+   {
+    "name": "Project Beta",
+    "status": "in progress",
+    "tasks": [
+     {
+      "name": "Task 3",
+      "dueDate": "2023-11-01",
+      "completed": false
+     },
+     {
+      "name": "Task 4",
+      "dueDate": "2023-12-01",
+      "completed": false
+     }
+    ]
+   }
+  ],
+  "preferences": {
+   "contactMethod": "email",
+   "newsletterSubscribed": true,
+   "languages": ["English", "Spanish", "German"]
+  }
+ }`
+
+ var jsonMap map[string]any
+ json.Unmarshal([]byte(data), &jsonMap)
+ completed, err := array.Get(jsonMap, "projects", "1", "tasks", "1", "completed")
+ if err != nil {
+  fmt.Println("statusOfTheSecondTaskOfTheFirstProject: ", completed)
+ }
+}
+```
+
 ## What problems does it solve
 
 Imagine you've got a complex structure like this
